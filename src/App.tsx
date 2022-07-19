@@ -4,6 +4,7 @@ import {
   FileUploader,
   Heading,
   majorScale,
+  MimeType,
   Pane,
   TextInputField,
   toaster,
@@ -81,11 +82,12 @@ function App() {
 
   function handleUpload(files: File[]) {
     if (!files.length) return;
+    const [file] = files;
 
-    setFile(files[0]);
+    setFile(file);
     setRanges([]);
     setParseState({ ...parseState, status: "pending" });
-    parseCSV(files[0])
+    parseCSV(file)
       .then((result) => {
         setParseState({ ...parseState, status: "success", result });
       })
@@ -118,6 +120,7 @@ function App() {
             description="The file should be a CSV file downloaded from a form response Google Sheet."
             maxFiles={1}
             onChange={handleUpload}
+            acceptedMimeTypes={[MimeType.csv]}
           />
 
           {file ? (
